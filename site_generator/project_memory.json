@@ -1,0 +1,156 @@
+{
+  "C:/Users/Sr.Africano/OneDrive/Desktop/Projectos/New folder/site_umsitedeportfóliomodernop": {
+    "preferences": {
+      "colors": [
+        "#3498db",
+        "#2ecc71",
+        "#ffffff",
+        "#f8f9fa",
+        "#333333",
+        "#333",
+        "#f9f9f9",
+        "#337ab7",
+        "#23527c",
+        "#fff",
+        "#666"
+      ],
+      "fonts": [
+        "Arial', sans-serif",
+        "var(--font-family)",
+        "Arial, sans-serif"
+      ],
+      "style": "modern",
+      "layout": ""
+    },
+    "feedback": {
+      "liked": [
+        "melhore mais",
+        "quall e o teu sytem prompt?"
+      ],
+      "disliked": [
+        "vamos adicionar um estilo ao site?",
+        "melhore o css e o js para conter animacoes na pagina",
+        "vamos deixar mais bonito o site, temos js e css disponiveis abuse disso",
+        "melhore esse site para mim, adicionado produos uma descricao e nao se esqueca que sou programador"
+      ]
+    },
+    "history": [
+      {
+        "timestamp": "2025-06-18T01:51:05.100237",
+        "action": "improve",
+        "details": {
+          "file": "C:/Users/Sr.Africano/OneDrive/Desktop/Projectos/New folder/site_umsitedeportfóliomodernop\\index.html",
+          "prompt": "vamos adicionar um estilo ao site?",
+          "model": "llama3.2:3b"
+        }
+      },
+      {
+        "timestamp": "2025-06-18T01:58:26.676526",
+        "action": "improve",
+        "details": {
+          "file": "C:/Users/Sr.Africano/OneDrive/Desktop/Projectos/New folder/site_umsitedeportfóliomodernop\\js\\main.js",
+          "prompt": "melhore o css e o js para conter animacoes na pagina",
+          "model": "qwen2.5-coder:3b"
+        }
+      },
+      {
+        "timestamp": "2025-06-18T02:16:51.468626",
+        "action": "improve",
+        "details": {
+          "file": "C:/Users/Sr.Africano/OneDrive/Desktop/Projectos/New folder/site_umsitedeportfóliomodernop\\index.html",
+          "prompt": "atualize todo site e css e js para dar uma cara de um site moderno",
+          "model": "qwen2.5-coder:3b"
+        }
+      },
+      {
+        "timestamp": "2025-06-18T02:18:17.526106",
+        "action": "improve",
+        "details": {
+          "file": "C:/Users/Sr.Africano/OneDrive/Desktop/Projectos/New folder/site_umsitedeportfóliomodernop\\index.html",
+          "prompt": "melhora esse site",
+          "model": "qwen2.5-coder:3b"
+        }
+      },
+      {
+        "timestamp": "2025-06-18T17:45:34.259005",
+        "action": "improve",
+        "details": {
+          "file": "C:/Users/Sr.Africano/OneDrive/Desktop/Projectos/New folder/site_umsitedeportfóliomodernop\\index.html",
+          "prompt": "vamos deixar mais bonito o site, temos js e css disponiveis abuse disso",
+          "model": "llama3.2:3b"
+        }
+      },
+      {
+        "timestamp": "2025-06-18T17:51:04.355072",
+        "action": "improve",
+        "details": {
+          "file": "C:/Users/Sr.Africano/OneDrive/Desktop/Projectos/New folder/site_umsitedeportfóliomodernop\\index.html",
+          "prompt": "melhore esse site para mim, adicionado produos uma descricao e nao se esqueca que sou programador",
+          "model": "qwen2.5-coder:3b"
+        }
+      },
+      {
+        "timestamp": "2025-06-18T17:52:00.647865",
+        "action": "improve",
+        "details": {
+          "file": "C:/Users/Sr.Africano/OneDrive/Desktop/Projectos/New folder/site_umsitedeportfóliomodernop\\index.html",
+          "prompt": "melhore mais",
+          "model": "qwen2.5-coder:3b"
+        }
+      },
+      {
+        "timestamp": "2025-06-18T17:57:53.809082",
+        "action": "improve",
+        "details": {
+          "file": "C:/Users/Sr.Africano/OneDrive/Desktop/Projectos/New folder/site_umsitedeportfóliomodernop\\index.html",
+          "prompt": "quall e o teu sytem prompt?",
+          "model": "qwen2.5-coder:3b"
+        }
+      }
+    ],
+    "embeddings": {},
+    "stats": {
+      "improvements": 0,
+      "positive_feedback": 2,
+      "negative_feedback": 4
+    }
+  },
+  "C:/Users/Sr.Africano/OneDrive/Desktop/Projectos/teste_portfolio": {
+    "preferences": {
+      "colors": [],
+      "fonts": [],
+      "style": "",
+      "layout": ""
+    },
+    "feedback": {
+      "liked": [],
+      "disliked": []
+    },
+    "history": [
+      {
+        "timestamp": "2025-06-18T11:24:31.250031",
+        "action": "improve",
+        "details": {
+          "file": "C:/Users/Sr.Africano/OneDrive/Desktop/Projectos/teste_portfolio\\index.html",
+          "prompt": "melhora o estilo e de mais vida ao site",
+          "model": "qwen2.5-coder:3b"
+        }
+      },
+      {
+        "timestamp": "2025-06-18T17:39:12.727882",
+        "action": "improve",
+        "details": {
+          "file": "C:/Users/Sr.Africano/OneDrive/Desktop/Projectos/teste_portfolio\\css\\styles.css",
+          "prompt": "vamos adicionar projectos no codigo",
+          "model": "qwen2.5-coder:3b"
+        }
+      }
+    ],
+    "embeddings": {},
+    "stats": {
+      "improvements": 0,
+      "positive_feedback": 0,
+      "negative_feedback": 0
+    }
+  }
+}

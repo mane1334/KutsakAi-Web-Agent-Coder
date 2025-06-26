@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>EditorWidget</class>
+ <widget class="QWidget" name="EditorWidget">
+  <property name="windowTitle">
+   <string>Editor de Sites com IA</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="QSplitter" name="mainSplitter" orientation="Qt::Horizontal">
+     <widget class="QWidget" name="filePanel">
+      <layout class="QVBoxLayout" name="filePanelLayout">
+       <item>
+        <widget class="QLabel" name="labelFiles">
+         <property name="text">
+          <string>Arquivos do Projeto</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QTreeWidget" name="fileTree"/>
+       </item>
+       <item>
+        <widget class="QListWidget" name="symbolsOutline"/>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="editorPanel">
+      <layout class="QVBoxLayout" name="editorPanelLayout">
+       <item>
+        <widget class="QTabWidget" name="editorTabs"/>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="previewPanel">
+      <layout class="QVBoxLayout" name="previewPanelLayout">
+       <item>
+        <widget class="QLabel" name="labelPreview">
+         <property name="text">
+          <string>Preview</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QWidget" name="webPreview" native="true"/>
+       </item>
+      </layout>
+     </widget>
+    </widget>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="improveRow">
+     <item>
+      <widget class="QLineEdit" name="improveInput">
+       <property name="placeholderText">
+        <string>Descreva as melhorias desejadas...</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="improveBtn">
+       <property name="text">
+        <string>✨ Melhorar com IA</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="improveAllBtn">
+       <property name="text">
+        <string>✨ Melhorar Todos Arquivos</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="loopIaBtn">
+       <property name="text">
+        <string>🔁 Loop IA (5x)</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="panelsRow">
+     <item>
+      <layout class="QVBoxLayout" name="snippetsCol">
+       <item>
+        <widget class="QLabel" name="labelSnippets">
+         <property name="text">
+          <string>Snippets Customizáveis:</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QListWidget" name="snippetsPanel"/>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="snippetBtns">
+         <item>
+          <widget class="QPushButton" name="addSnippetBtn">
+           <property name="text">
+            <string>Adicionar Snippet</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="removeSnippetBtn">
+           <property name="text">
+            <string>Remover Snippet</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QVBoxLayout" name="gitCol">
+       <item>
+        <widget class="QLabel" name="labelGit">
+         <property name="text">
+          <string>Status do Git:</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QListWidget" name="gitPanel"/>
+       </item>
+       <item>
+        <widget class="QPushButton" name="updateGitBtn">
+         <property name="text">
+          <string>Atualizar Status Git</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QVBoxLayout" name="pluginsCol">
+       <item>
+        <widget class="QLabel" name="labelPlugins">
+         <property name="text">
+          <string>Plugins carregados:</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QListWidget" name="pluginsPanel"/>
+       </item>
+      </layout>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="QListWidget" name="problemsPanel"/>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

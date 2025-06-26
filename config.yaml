@@ -1,0 +1,59 @@
+app:
+  name: "KutsakAI Web Agent Builder"
+  version: "2.1.0"
+  debug: false
+  auto_save: true
+  backup_interval: 300
+
+ollama:
+  base_url: "http://localhost:11434"
+  default_model: "codellama"
+  timeout: 300
+  max_retries: 3
+  circuit_breaker:
+    failure_threshold: 5
+    timeout: 60
+
+ui:
+  theme: "dark"
+  language: "pt-BR"
+  window:
+    width: 1400
+    height: 900
+    min_width: 1000
+    min_height: 700
+  fonts:
+    default_family: "Inter, Segoe UI Variable, SF Pro Display, Roboto, sans-serif"
+    default_size: 13
+    code_family: "JetBrains Mono, Fira Code, Consolas, monospace"
+    code_size: 12
+
+performance:
+  cache_enabled: true
+  cache_size: 100
+  cache_ttl: 3600
+  max_workers: 4
+  chunk_size: 1024
+
+logging:
+  level: "INFO"
+  file: "app.log"
+  max_size: 10485760  # 10MB
+  backup_count: 5
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+
+plugins:
+  enabled: true
+  directory: "plugins"
+  auto_load: true
+
+projects:
+  default_directory: "projects"
+  auto_backup: true
+  backup_interval: 600  # 10 minutes
+  max_recent_projects: 10
+
+security:
+  enable_code_execution_sandbox: true
+  allowed_file_extensions: [".html", ".css", ".js", ".py", ".md", ".txt", ".json", ".yaml"]
+  max_file_size: 5242880  # 5MB
