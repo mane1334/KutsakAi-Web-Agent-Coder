@@ -13,6 +13,7 @@ from enum import Enum
 from config_manager import get_config
 from logger import get_logger, monitor_performance, LogContext
 from cache_system import get_cache, cache_get_or_compute
+from llm_providers import ProviderFactory
 
 # ============================================================================
 # STANDARDIZED ERROR CLASSES
@@ -75,29 +76,29 @@ OLLAMA_PULL_URL = f"{OLLAMA_BASE_URL}/api/pull"
 OLLAMA_MODEL = "codellama"
 
 # System prompt padrão
-DEFAULT_SYSTEM_PROMPT = """ONLY USE HTML, CSS AND JAVASCRIPT.
-If you want to use ICON make sure to import the library first.
-Try to create the best UI possible by using only HTML, CSS AND JAVASCRIPT.
-MAKE IT RESPONSIVE USING TAILWINDCSS.
-Use as much as you can TailwindCSS for CSS.
-If you can't do something with TailwindCSS, use custom CSS.
-Ensure to include TailwindCSS CDN in the head:
-  <script src="https://cdn.tailwindcss.com"></script>
-Elaborate as much as possible to create something unique.
-ALWAYS GIVE THE RESPONSE INTO A SINGLE HTML FILE.
+DEFAULT_SYSTEM_PROMPT = """You are an expert Web Agent specialized in creating modern, high-performance, and visually stunning websites.
 
-// Implementation Guidelines:
-1. Prioritize clean, modern UI design principles
-2. Use responsive layouts (mobile-first approach)
-3. Implement interactive elements when beneficial
-4. Maintain accessibility standards (a11y)
-5. Optimize for performance
-6. Ensure cross-browser compatibility
-7. Include clear visual hierarchy
-8. Provide intuitive user experience
+CORE RULES:
+1. ONLY USE HTML, CSS AND JAVASCRIPT.
+2. ALWAYS PROVIDE THE RESPONSE AS A SINGLE, COMPLETE HTML FILE.
+3. MAKE IT FULLY RESPONSIVE (Mobile-First).
+4. USE MODERN DESIGN SYSTEMS (Glassmorphism, Neumorphism, Minimalist, or Bold Modern).
 
-// OBSERVATION:
-// Using TailwindCSS via CDN REQUIRES an active internet connection. If offline, TailwindCSS will not load and styles will not apply. For offline use, download TailwindCSS and serve it locally."""
+FRAMEWORKS & LIBRARIES:
+- Always include TailwindCSS: <script src="https://cdn.tailwindcss.com"></script>
+- Use Lucide Icons or FontAwesome for iconography.
+- Use Google Fonts (Inter, Poppins, or Roboto).
+- For animations, use Framer Motion (via script) or AOS (Animate On Scroll).
+
+DESIGN GUIDELINES:
+- Clean typography and generous whitespace.
+- Vibrant gradients and subtle shadows.
+- Interactive elements with smooth transitions.
+- Dark mode support by default or as a toggle.
+- High accessibility standards (WCAG).
+
+OUTPUT FORMAT:
+Return only the HTML code within a single file. No explanations unless requested."""
 
 def prepare_file_context(files: Dict[str, str]) -> str:
     """Prepara o contexto dos arquivos para o Ollama.
@@ -228,93 +229,22 @@ def generate_code_with_retry(prompt: str, model: str = OLLAMA_MODEL, max_retries
     raise OllamaConnectionError(f"Maximum retries exceeded. Last error: {str(last_exception)}", last_exception)
 
 def generate_code_stream(prompt: str, model: str = OLLAMA_MODEL) -> Generator[str, None, None]:
-    """Generate code using Ollama with streaming support (yields tokens/chunks).
-    
-    Args:
-        prompt: The prompt to generate code from
-        model: The model to use for generation
-        
-    Yields:
-        str: Individual chunks/tokens from the model response
-        
-    Raises:
-        OllamaConnectionError: When cannot connect to Ollama service
-        OllamaTimeoutError: When request times out
-        OllamaModelError: When there's an issue with the model
-        OllamaResponseError: When Ollama returns an error response
-        OllamaStreamError: When there's an error during streaming
-    """
+    """Generate code using the active provider with streaming support."""
     try:
-        payload = {
-            "model": model,
-            "prompt": prompt,
-            "stream": True,
-            "system": DEFAULT_SYSTEM_PROMPT
-        }
+        config_data = get_config("providers", {})
+        active_provider = config_data.get("active", "ollama")
+        provider_config = config_data.get(active_provider, {})
         
-        logger.info(f"Starting streaming request to model {model}")
+        provider = ProviderFactory.get_provider(active_provider, provider_config)
         
-        try:
-            response = requests.post(
-                OLLAMA_GENERATE_URL, 
-                json=payload, 
-                stream=True, 
-                timeout=(10, 300)  # Connection timeout, read timeout
-            )
-            response.raise_for_status()
-        except requests.exceptions.ConnectionError as e:
-            raise OllamaConnectionError(original_error=e)
-        except requests.exceptions.Timeout as e:
-            raise OllamaTimeoutError(original_error=e)
-        except requests.exceptions.HTTPError as e:
-            if e.response.status_code == 404:
-                raise OllamaModelError(f"Model not found or not available", model, e)
-            else:
-                raise OllamaResponseError(f"HTTP {e.response.status_code}: {e.response.text}", e)
+        logger.info(f"Starting streaming request using provider {active_provider} and model {model}")
         
-        try:
-            for line in response.iter_lines():
-                if not line:
-                    continue
-                    
-                try:
-                    # Convert bytes to string if necessary
-                    if isinstance(line, bytes):
-                        line = line.decode('utf-8')
-                    
-                    # Parse JSON response
-                    chunk_data = json.loads(line)
-                    
-                    # Check for errors in response
-                    if "error" in chunk_data:
-                        raise OllamaResponseError(chunk_data["error"])
-                    
-                    # Extract response text
-                    response_text = chunk_data.get("response", "")
-                    if response_text:  # Only yield non-empty responses
-                        yield response_text
-                        
-                    # Check if this is the final chunk
-                    if chunk_data.get("done", False):
-                        break
-                        
-                except json.JSONDecodeError as e:
-                    raise OllamaStreamError(f"Invalid JSON in response: {line[:100]}...", e)
-                except OllamaError:
-                    # Re-raise Ollama errors (like OllamaResponseError) without wrapping
-                    raise
-                except Exception as e:
-                    raise OllamaStreamError(f"Error processing chunk: {str(e)}", e)
-                    
-        except requests.exceptions.RequestException as e:
-            raise OllamaStreamError(f"Network error during streaming", e)
+        for chunk in provider.generate_stream(prompt, model, system_prompt=DEFAULT_SYSTEM_PROMPT):
+            yield chunk
             
-    except OllamaError:
-        # Re-raise our custom errors
-        raise
     except Exception as e:
-        # Catch any other unexpected errors
-        raise OllamaStreamError(f"Unexpected error during streaming", e)
+        logger.error(f"Erro na geração de código: {e}")
+        yield f"[Erro: {str(e)}]"
 
 def list_models(session: Optional[requests.Session] = None) -> List[str]:
     """Lista os modelos disponíveis no Ollama.

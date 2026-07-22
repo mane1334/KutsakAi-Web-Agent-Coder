@@ -169,14 +169,34 @@ class SiteGeneratorGUI(QWidget):
         
         model_layout = QHBoxLayout(model_container)
         
-        model_label = QLabel("🤖 Modelo IA:")
-        model_label.setStyleSheet("""
+        # Provider Selection
+        provider_label = QLabel("🌐 Provedor:")
+        provider_label.setStyleSheet("""
             QLabel {
                 color: #e6e6e6;
                 font-size: 14px;
                 font-weight: 500;
             }
         """)
+        
+        self.provider_combo = QComboBox()
+        self.provider_combo.addItems(["Ollama", "OpenRouter", "NVIDIA", "Custom"])
+        self.provider_combo.setStyleSheet("""
+            QComboBox {
+                background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                          stop: 0 #1f1f1f, stop: 1 #1a1a1a);
+                color: #e6e6e6;
+                border: 1px solid #3a3a3a;
+                border-radius: 8px;
+                padding: 10px 12px;
+                font-size: 13px;
+                min-width: 150px;
+                margin-right: 20px;
+            }
+        """)
+        
+        model_label = QLabel("🤖 Modelo IA:")
+        model_label.setStyleSheet(provider_label.styleSheet())
         
         self.model_combo = QComboBox()
         try:
@@ -186,6 +206,8 @@ class SiteGeneratorGUI(QWidget):
                 self.model_combo.addItem("Nenhum modelo disponível")
         except:
             self.model_combo.addItem("Erro ao carregar modelos")
+        
+        self.provider_combo.currentTextChanged.connect(self.on_provider_changed)
         
         self.model_combo.setStyleSheet("""
             QComboBox {
@@ -221,6 +243,8 @@ class SiteGeneratorGUI(QWidget):
             }
         """)
         
+        model_layout.addWidget(provider_label)
+        model_layout.addWidget(self.provider_combo)
         model_layout.addWidget(model_label)
         model_layout.addWidget(self.model_combo)
         model_layout.addStretch()
@@ -344,7 +368,7 @@ Layout: Responsivo para mobile e desktop""")
         """)
         
         self.framework_combo = QComboBox()
-        self.framework_combo.addItems(["CSS Vanilla", "Bootstrap 5", "Tailwind CSS", "Material Design"])
+        self.framework_combo.addItems(["CSS Vanilla", "Bootstrap 5", "Tailwind CSS", "Material Design", "DaisyUI", "Flowbite", "Chakra UI"])
         self.framework_combo.setStyleSheet(self.model_combo.styleSheet())
         
         framework_layout.addWidget(framework_label)
@@ -358,8 +382,8 @@ Layout: Responsivo para mobile e desktop""")
         
         self.site_type_combo = QComboBox()
         self.site_type_combo.addItems([
-            "Landing Page", "Portfolio", "Blog", "E-commerce", 
-            "Corporativo", "Dashboard", "Documentação"
+            "Landing Page Modern", "SaaS Landing", "Portfolio Minimal", "Blog Personal", "E-commerce Store", 
+            "Corporate Portal", "Admin Dashboard", "API Documentation", "Product Launch"
         ])
         self.site_type_combo.setStyleSheet(self.model_combo.styleSheet())
         
@@ -687,3 +711,32 @@ Responda APENAS com o código JavaScript."""
             
         finally:
             self.generate_btn.setEnabled(True)
+
+    def on_provider_changed(self, provider_name):
+        """Atualiza o provedor ativo na configuração e recarrega modelos."""
+        from config_manager import set_config
+        from ollama_client import list_models
+        set_config("providers.active", provider_name.lower())
+        
+        # Update model list based on provider
+        self.model_combo.clear()
+        if provider_name.lower() == "ollama":
+            try:
+                models = list_models()
+                self.model_combo.addItems(models)
+            except:
+                self.model_combo.addItem("codellama")
+        elif provider_name.lower() == "openrouter":
+            self.model_combo.addItems([
+                "anthropic/claude-3-opus", 
+                "anthropic/claude-3.5-sonnet",
+                "openai/gpt-4o",
+                "google/gemini-pro-1.5"
+            ])
+        elif provider_name.lower() == "nvidia":
+            self.model_combo.addItems([
+                "nvidia/llama-3.1-405b-instruct",
+                "nvidia/mistral-large-2-instruct"
+            ])
+        else:
+            self.model_combo.addItem("default-model")

@@ -4,7 +4,7 @@ from PyQt6.QtWidgets import (
     QApplication, QMainWindow, QWidget, QVBoxLayout, QHBoxLayout, QTabWidget,
     QLabel, QPushButton, QFrame, QSplashScreen, QProgressBar,
     QSystemTrayIcon, QMenu, QMenuBar, QToolBar, QStatusBar,
-    QMessageBox, QStyleFactory, QCheckBox, QComboBox
+    QMessageBox, QStyleFactory, QCheckBox, QComboBox, QLineEdit
 )
 from PyQt6.QtGui import QIcon, QPixmap, QPalette, QColor, QFont, QAction
 from PyQt6.QtCore import Qt, QTimer, QThread, pyqtSignal, QSettings
@@ -17,6 +17,7 @@ if current_dir not in sys.path:
     sys.path.append(current_dir)
 
 from site_generator import SiteGeneratorGUI, SiteEditorGUI, ChatGUI
+from config_manager import get_config
 
 class SplashScreen(QSplashScreen):
     """Tela de inicialização moderna."""
@@ -838,16 +839,43 @@ class CoderAgentGUI(QWidget):
         theme_layout.addWidget(theme_combo)
         layout.addLayout(theme_layout)
         
-        # Outros configs podem ser adicionados aqui
+        # Configurações de API
+        api_label = QLabel('<b>Chaves de API</b>')
+        api_label.setStyleSheet("margin-top: 10px;")
+        layout.addWidget(api_label)
+        
+        # OpenRouter Key
+        or_layout = QHBoxLayout()
+        or_layout.addWidget(QLabel('OpenRouter:'))
+        or_input = QLineEdit()
+        or_input.setEchoMode(QLineEdit.EchoMode.Password)
+        or_input.setText(get_config("providers.openrouter.api_key", ""))
+        or_layout.addWidget(or_input)
+        layout.addLayout(or_layout)
+        
+        # NVIDIA Key
+        nv_layout = QHBoxLayout()
+        nv_layout.addWidget(QLabel('NVIDIA:'))
+        nv_input = QLineEdit()
+        nv_input.setEchoMode(QLineEdit.EchoMode.Password)
+        nv_input.setText(get_config("providers.nvidia.api_key", ""))
+        nv_layout.addWidget(nv_input)
+        layout.addLayout(nv_layout)
         
         # Botões
         button_layout = QHBoxLayout()
-        ok_button = QPushButton('OK')
+        ok_button = QPushButton('Salvar')
         cancel_button = QPushButton('Cancelar')
         
         def save_settings():
             selected_theme = theme_combo.currentText().lower()
             self.change_theme(selected_theme)
+            
+            # Salvar chaves de API
+            from config_manager import set_config
+            set_config("providers.openrouter.api_key", or_input.text())
+            set_config("providers.nvidia.api_key", nv_input.text())
+            
             dialog.accept()
         
         ok_button.clicked.connect(save_settings)

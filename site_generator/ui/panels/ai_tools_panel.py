@@ -107,14 +107,14 @@ class AIToolsPanel(QWidget):
         header.setStyleSheet("color: #e6e6e6; margin-bottom: 8px;")
         layout.addWidget(header)
 
-        # Model Selection
-        model_layout = QHBoxLayout()
-        model_label = QLabel('Model:')
-        model_label.setStyleSheet("color: #e6e6e6; font-weight: 500;")
-        model_layout.addWidget(model_label)
-        self.model_combo = QComboBox()
-        self.model_combo.addItems(list_models())
-        self.model_combo.setStyleSheet("""
+        # Provider Selection
+        provider_layout = QHBoxLayout()
+        provider_label = QLabel('Provider:')
+        provider_label.setStyleSheet("color: #e6e6e6; font-weight: 500;")
+        provider_layout.addWidget(provider_label)
+        self.provider_combo = QComboBox()
+        self.provider_combo.addItems(["Ollama", "OpenRouter", "NVIDIA", "Custom"])
+        self.provider_combo.setStyleSheet("""
             QComboBox {
                 background: #2a2a2a;
                 color: #e6e6e6;
@@ -123,19 +123,22 @@ class AIToolsPanel(QWidget):
                 border-radius: 4px;
                 font-size: 11px;
             }
-            QComboBox::drop-down {
-                border: none;
-            }
-            QComboBox::down-arrow {
-                image: none;
-                border-left: 5px solid transparent;
-                border-right: 5px solid transparent;
-                border-top: 5px solid #e6e6e6;
-            }
         """)
+        provider_layout.addWidget(self.provider_combo)
+        layout.addLayout(provider_layout)
+
+        # Model Selection
+        model_layout = QHBoxLayout()
+        model_label = QLabel('Model:')
+        model_label.setStyleSheet("color: #e6e6e6; font-weight: 500;")
+        model_layout.addWidget(model_label)
+        self.model_combo = QComboBox()
+        self.model_combo.addItems(list_models())
+        self.model_combo.setStyleSheet(self.provider_combo.styleSheet())
         model_layout.addWidget(self.model_combo)
-        model_layout.addStretch()
         layout.addLayout(model_layout)
+        
+        self.provider_combo.currentTextChanged.connect(self.on_provider_changed)
 
         # Improvement Prompt
         prompt_label = QLabel('Improvement Prompt:')
@@ -331,3 +334,32 @@ class AIToolsPanel(QWidget):
     def is_add_to_snippets_enabled(self):
         """Check if add to snippets after improvement is enabled"""
         return self.add_to_snippets_checkbox.isChecked()
+
+    def on_provider_changed(self, provider_name):
+        """Atualiza o provedor ativo na configuração e recarrega modelos."""
+        from config_manager import set_config
+        from ollama_client import list_models
+        set_config("providers.active", provider_name.lower())
+        
+        # Update model list based on provider
+        self.model_combo.clear()
+        if provider_name.lower() == "ollama":
+            try:
+                models = list_models()
+                self.model_combo.addItems(models)
+            except:
+                self.model_combo.addItem("codellama")
+        elif provider_name.lower() == "openrouter":
+            self.model_combo.addItems([
+                "anthropic/claude-3-opus", 
+                "anthropic/claude-3.5-sonnet",
+                "openai/gpt-4o",
+                "google/gemini-pro-1.5"
+            ])
+        elif provider_name.lower() == "nvidia":
+            self.model_combo.addItems([
+                "nvidia/llama-3.1-405b-instruct",
+                "nvidia/mistral-large-2-instruct"
+            ])
+        else:
+            self.model_combo.addItem("default-model")

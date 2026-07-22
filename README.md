@@ -5,19 +5,22 @@ Agente de programação IA local avançado, inspirado no Claude Code, usando Oll
 ## 🌟 Funcionalidades
 
 ### 🤖 IA e Automação
-- **Geração inteligente de código** com contexto de projeto
-- **Interpretação e execução** de código Python
-- **Correção automática de bugs** e otimização
-- **Sistema RAG/Yarn** para contexto e memória
-- **Busca de código na web** integrada
+- **Multi-Provedor LLM**: Suporte para **Ollama, OpenRouter e NVIDIA**.
+- **Geração inteligente de código** com contexto de projeto.
+- **Interpretação e execução** de código Python.
+- **Correção automática de bugs** e otimização.
+- **Sistema RAG/Yarn** para contexto e memória.
+- **Busca de código na web** integrada.
 
 ### 🎨 Interface Gráfica (PyQt6)
-- **Interface moderna** com tema dark/light
-- **Editor de código** com syntax highlighting
-- **Gerador de sites** interativo
-- **Chat com IA** integrado
-- **Painel de ferramentas** produtivas
-- **Preview em tempo real** de páginas web
+- **Interface UI/UX Melhorada**: Design mais moderno com cores vibrantes (Indigo/Violet).
+- **Seletor de Provedores e Modelos** em todas as abas principais.
+- **Diálogo de Configurações** para chaves de API.
+- **Editor de código** com syntax highlighting.
+- **Gerador de sites** interativo.
+- **Chat com IA** integrado (correção de bugs de input).
+- **Painel de ferramentas** produtivas.
+- **Preview em tempo real** de páginas web.
 
 ### 📁 Gerenciamento de Arquivos
 - **Manipulação de arquivos e pastas**
@@ -26,11 +29,13 @@ Agente de programação IA local avançado, inspirado no Claude Code, usando Oll
 - **Sistema de cache** otimizado
 
 ### 🌐 Desenvolvimento Web
-- **Suporte completo ao TailwindCSS**
-- **Templates inteligentes** e reutilizáveis
-- **Responsividade mobile-first**
-- **Acessibilidade WCAG 2.1 AA**
-- **Preview fullscreen** de projetos
+- **Novos Skills de Design**: Suporte para **DaisyUI, Flowbite e Chakra UI**.
+- **Novos Tipos de Site**: Landing Pages Modernas, SaaS, Portfólios Minimalistas, E-commerce, etc.
+- **Suporte completo ao TailwindCSS**.
+- **Templates inteligentes** e reutilizáveis.
+- **Responsividade mobile-first**.
+- **Acessibilidade WCAG 2.1 AA**.
+- **Preview fullscreen** de projetos.
 
 ## 📋 Pré-requisitos
 

@@ -18,8 +18,10 @@ def main():
     args = parser.parse_args()
 
     if args.command == 'models':
+        from config_manager import get_config
+        active_provider = get_config("providers.active", "ollama")
         modelos = list_models()
-        print('Modelos disponíveis no Ollama:')
+        print(f'Modelos disponíveis no provedor ativo ({active_provider}):')
         for m in modelos:
             print(f'- {m}')
         return

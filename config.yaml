@@ -5,14 +5,19 @@ app:
   auto_save: true
   backup_interval: 300
 
-ollama:
-  base_url: "http://localhost:11434"
-  default_model: "codellama"
-  timeout: 300
-  max_retries: 3
-  circuit_breaker:
-    failure_threshold: 5
-    timeout: 60
+providers:
+  active: "ollama"
+  ollama:
+    base_url: "http://localhost:11434"
+    default_model: "codellama"
+    timeout: 300
+    max_retries: 3
+  openrouter:
+    api_key: ""
+    default_model: "anthropic/claude-3-opus"
+  nvidia:
+    api_key: ""
+    default_model: "nvidia/llama-3.1-405b-instruct"
 
 ui:
   theme: "dark"

@@ -409,9 +409,9 @@ class ChatGUI(QWidget):
         
         sidebar_layout = QVBoxLayout(self.sidebar)
         
-        # Model section
-        model_label = QLabel("🤖 Modelo IA")
-        model_label.setStyleSheet("""
+        # Provider section
+        provider_label = QLabel("🌐 Provedor LLM")
+        provider_label.setStyleSheet("""
             QLabel {
                 color: #e6e6e6;
                 font-size: 14px;
@@ -419,6 +419,25 @@ class ChatGUI(QWidget):
                 margin-bottom: 8px;
             }
         """)
+        
+        self.provider_combo = QComboBox()
+        self.provider_combo.addItems(["Ollama", "OpenRouter", "NVIDIA", "Custom"])
+        self.provider_combo.setStyleSheet("""
+            QComboBox {
+                background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                          stop: 0 #2a2a2a, stop: 1 #252525);
+                color: #e6e6e6;
+                border: 1px solid #3a3a3a;
+                border-radius: 8px;
+                padding: 8px 12px;
+                font-size: 13px;
+                margin-bottom: 16px;
+            }
+        """)
+        
+        # Model section
+        model_label = QLabel("🤖 Modelo IA")
+        model_label.setStyleSheet(provider_label.styleSheet())
         
         self.model_combo = QComboBox()
         try:
@@ -428,6 +447,9 @@ class ChatGUI(QWidget):
                 self.model_combo.addItem("Nenhum modelo disponível")
         except:
             self.model_combo.addItem("Erro ao carregar modelos")
+        
+        # Connect provider change to model list update
+        self.provider_combo.currentTextChanged.connect(self.on_provider_changed)
         
         self.model_combo.setStyleSheet("""
             QComboBox {
@@ -508,6 +530,8 @@ class ChatGUI(QWidget):
         self.export_button.clicked.connect(self.export_chat)
         
         # Layout
+        sidebar_layout.addWidget(provider_label)
+        sidebar_layout.addWidget(self.provider_combo)
         sidebar_layout.addWidget(model_label)
         sidebar_layout.addWidget(self.model_combo)
         sidebar_layout.addWidget(stats_label)
@@ -579,7 +603,11 @@ Como posso ajudar você hoje?"""
             del self.typing_indicator
     
     def on_send(self):
-        prompt = self.prompt_input.toPlainText().strip()
+        # QLineEdit uses text(), not toPlainText()
+        if hasattr(self.prompt_input, 'toPlainText'):
+            prompt = self.prompt_input.toPlainText().strip()
+        else:
+            prompt = self.prompt_input.text().strip()
         if not prompt or self.is_generating:
             return
         
@@ -669,3 +697,31 @@ Como posso ajudar você hoje?"""
                 QMessageBox.information(self, "Sucesso", f"Chat exportado para:\n{filename}")
             except Exception as e:
                 QMessageBox.critical(self, "Erro", f"Erro ao exportar chat:\n{str(e)}")
+
+    def on_provider_changed(self, provider_name):
+        """Atualiza o provedor ativo na configuração e recarrega modelos."""
+        from config_manager import set_config
+        set_config("providers.active", provider_name.lower())
+        
+        # Update model list based on provider
+        self.model_combo.clear()
+        if provider_name.lower() == "ollama":
+            try:
+                models = list_models()
+                self.model_combo.addItems(models)
+            except:
+                self.model_combo.addItem("codellama")
+        elif provider_name.lower() == "openrouter":
+            self.model_combo.addItems([
+                "anthropic/claude-3-opus", 
+                "anthropic/claude-3.5-sonnet",
+                "openai/gpt-4o",
+                "google/gemini-pro-1.5"
+            ])
+        elif provider_name.lower() == "nvidia":
+            self.model_combo.addItems([
+                "nvidia/llama-3.1-405b-instruct",
+                "nvidia/mistral-large-2-instruct"
+            ])
+        else:
+            self.model_combo.addItem("default-model")

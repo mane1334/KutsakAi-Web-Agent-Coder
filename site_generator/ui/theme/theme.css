@@ -12,10 +12,10 @@
     --color-divider: #3a3a3a;
 
     /* Colors - Brand */
-    --color-primary: #10a37f;
-    --color-primary-dark: #0d8a6c;
-    --color-primary-darker: #0a6b4f;
-    --color-primary-light: #34d399;
+    --color-primary: #6366f1; /* Indigo Moderno */
+    --color-primary-dark: #4f46e5;
+    --color-primary-darker: #4338ca;
+    --color-primary-light: #818cf8;
     --color-on-primary: #ffffff;
 
     /* Colors - State */
@@ -31,7 +31,7 @@
     /* Colors - Gradient */
     --gradient-primary: linear-gradient(135deg, var(--color-primary), var(--color-primary-dark));
     --gradient-surface: linear-gradient(180deg, var(--color-surface), var(--color-surface-variant));
-    --gradient-header: linear-gradient(135deg, #667eea, #764ba2);
+    --gradient-header: linear-gradient(135deg, #6366f1, #a855f7);
 
     /* Typography */
     --font-family-base: 'Inter', 'Segoe UI Variable', system-ui, sans-serif;
