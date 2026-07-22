@@ -291,6 +291,12 @@ class ChatGUI(QWidget):
         self.create_input_area()
         chat_layout.addWidget(self.input_frame)
         
+        # Diff View (escondido por padrão)
+        from .ui.components.diff_view import DiffView
+        self.diff_view = DiffView()
+        self.diff_view.hide()
+        chat_layout.addWidget(self.diff_view)
+        
         content_layout.addWidget(chat_container, 3)
         
         # Sidebar

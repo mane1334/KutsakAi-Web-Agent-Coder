@@ -6,21 +6,21 @@ Agente de programação IA local avançado, inspirado no Claude Code, usando Oll
 
 ### 🤖 IA e Automação
 - **Multi-Provedor LLM**: Suporte para **Ollama, OpenRouter e NVIDIA**.
-- **Geração inteligente de código** com contexto de projeto.
-- **Interpretação e execução** de código Python.
+- **RAG 2.0 (Memória Semântica)**: Sistema avançado de recuperação de contexto usando TF-IDF e Similaridade de Cosseno para entender o seu código.
+- **Interpretador de Código Seguro (Sandbox)**: Execução de código Python com restrições de segurança para proteger o seu sistema.
+- **Geração inteligente de código** com contexto de projeto enriquecido.
 - **Correção automática de bugs** e otimização.
-- **Sistema RAG/Yarn** para contexto e memória.
 - **Busca de código na web** integrada.
 
 ### 🎨 Interface Gráfica (PyQt6)
-- **Interface UI/UX Melhorada**: Design mais moderno com cores vibrantes (Indigo/Violet).
+- **Dashboard de Observabilidade**: Visualize em tempo real a performance, uso de cache, eventos e erros do sistema.
+- **Visualização de Diff**: Revise as alterações propostas pela IA antes de as aplicar ao seu código.
+- **Interface UI/UX Moderna**: Design profissional com foco em produtividade.
 - **Seletor de Provedores e Modelos** em todas as abas principais.
 - **Diálogo de Configurações** para chaves de API.
-- **Editor de código** com syntax highlighting.
-- **Gerador de sites** interativo.
-- **Chat com IA** integrado (correção de bugs de input).
-- **Painel de ferramentas** produtivas.
-- **Preview em tempo real** de páginas web.
+- **Editor de código** avançado com syntax highlighting.
+- **Chat com IA** interativo com suporte a streaming.
+- **Preview em tempo real** de projetos web.
 
 ### 📁 Gerenciamento de Arquivos
 - **Manipulação de arquivos e pastas**

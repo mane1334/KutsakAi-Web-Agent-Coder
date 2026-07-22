@@ -729,6 +729,11 @@ class CoderAgentGUI(QWidget):
         self.web_coder = ChatGUI()
         self.tabs.addTab(self.web_coder, '💬 Chat')
         
+        # Tab: Dashboard
+        from site_generator.ui.dashboard_view import DashboardView
+        self.dashboard = DashboardView()
+        self.tabs.addTab(self.dashboard, '📊 Dashboard')
+        
     def setup_status_bar(self):
         """Configura a barra de status."""
         self.status_bar = QStatusBar()

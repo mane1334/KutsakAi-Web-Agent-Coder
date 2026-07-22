@@ -229,11 +229,19 @@ def generate_code_with_retry(prompt: str, model: str = OLLAMA_MODEL, max_retries
     raise OllamaConnectionError(f"Maximum retries exceeded. Last error: {str(last_exception)}", last_exception)
 
 def generate_code_stream(prompt: str, model: str = OLLAMA_MODEL) -> Generator[str, None, None]:
-    """Generate code using the active provider with streaming support."""
+    """Generate code using the active provider with streaming support and RAG 2.0 context."""
     try:
+        from rag_yarn import retrieve_relevant_text
+        
         config_data = get_config("providers", {})
         active_provider = config_data.get("active", "ollama")
         provider_config = config_data.get(active_provider, {})
+        
+        # Enriquecer prompt com contexto relevante (RAG 2.0)
+        context = retrieve_relevant_text(prompt)
+        if context:
+            prompt = f"### Contexto Relevante do Projeto:\n{context}\n\n### Pedido do Utilizador:\n{prompt}"
+            logger.info("Contexto RAG 2.0 adicionado ao prompt")
         
         provider = ProviderFactory.get_provider(active_provider, provider_config)
         
